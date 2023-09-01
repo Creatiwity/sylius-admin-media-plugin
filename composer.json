@@ -7,7 +7,7 @@
     "require": {
         "php": ">=7.3",
         "sylius/sylius": "^1.7",
-        "artgris/media-bundle": "^5.2"
+        "artgris/media-bundle": ">=5.2"
     },
     "require-dev": {
         "symfony/web-server-bundle": "^4.4",
