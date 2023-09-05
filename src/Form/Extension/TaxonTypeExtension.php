@@ -34,14 +34,13 @@ final class TaxonTypeExtension extends AbstractTypeExtension
                 'allow_delete' => true,
                 'by_reference' => false,
                 'label' => 'sylius.form.taxon.images',
-            ])
-        ;
+            ]);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getExtendedTypes(): iterable
+    public static function getExtendedTypes(): iterable
     {
         return [TaxonType::class];
     }

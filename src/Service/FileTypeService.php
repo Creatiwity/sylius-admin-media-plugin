@@ -35,10 +35,12 @@ class FileTypeService extends BaseFileTypeService
     {
 
         if ($fileManager->getImagePath()) {
-            $filePath = htmlentities($fileManager->getImagePath().rawurlencode($file->getFilename()));
+            $filePath = htmlentities($fileManager->getImagePath() . rawurlencode($file->getFilename()));
         } else {
-            $filePath = $this->router->generate('file_manager_file',
-                array_merge($fileManager->getQueryParameters(), ['fileName' => rawurlencode($file->getFilename())]));
+            $filePath = $this->router->generate(
+                'file_manager_file',
+                array_merge($fileManager->getQueryParameters(), ['fileName' => rawurlencode($file->getFilename())])
+            );
         }
 
         $filePath = $file->getFilename();
@@ -54,19 +56,21 @@ class FileTypeService extends BaseFileTypeService
         }
 
         if ('dir' === $type) {
-            $href = $this->router->generate('file_manager', array_merge($fileManager->getQueryParameters(),
-                ['route' => $fileManager->getRoute().'/'.rawurlencode($file->getFilename())]));
+            $href = $this->router->generate('file_manager', array_merge(
+                $fileManager->getQueryParameters(),
+                ['route' => $fileManager->getRoute() . '/' . rawurlencode($file->getFilename())]
+            ));
 
             return [
                 'path' => $filePath,
                 'html' => "<i class='fas fa-folder-open' aria-hidden='true'></i>",
-                'folder' => '<a  href="'.$href.'">'.$file->getFilename().'</a>',
+                'folder' => '<a  href="' . $href . '">' . $file->getFilename() . '</a>',
             ];
         }
     }
 
 
-    public function fileIcon($filePath, $extension = null, $size = 75, $lazy = false)
+    public function fileIcon(string $filePath, ?string $extension = null, ?int $size = 75, ?bool $lazy = false, ?string $twigExtension = null, ?bool $cachebreaker = null): array
     {
 
         if (null === $extension) {
@@ -85,20 +89,20 @@ class FileTypeService extends BaseFileTypeService
                 break;
             case preg_match('/(gif|png|jpe?g|svg)$/i', $extension):
                 $query = parse_url($filePath, PHP_URL_QUERY);
-                $time = 'time='.time();
+                $time = 'time=' . time();
 
                 // get the public dir
-                $publicDir = $this->params->get('kernel.project_dir').'/public';
+                $publicDir = $this->params->get('kernel.project_dir') . '/public';
 
                 $fileManagerParams = $this->params->get('artgris_file_manager');
                 $baseUrl = $fileManagerParams['conf']['default']['dir'];
 
                 // remove the public dir from the absolute path
-                $relativeBaseUrl = str_replace($publicDir,"", $baseUrl);
+                $relativeBaseUrl = str_replace($publicDir, "", $baseUrl);
 
-                $filePathRelative = $relativeBaseUrl.'/'.$filePath;
+                $filePathRelative = $relativeBaseUrl . '/' . $filePath;
 
-                $fileName = $query ? $filePathRelative.'&'.$time : $filePathRelative.'?'.$time;
+                $fileName = $query ? $filePathRelative . '&' . $time : $filePathRelative . '?' . $time;
 
                 if ($lazy) {
                     $html = "<img class=\"lazy\" data-src=\"{$fileName}\" height='{$size}'>";
@@ -138,5 +142,4 @@ class FileTypeService extends BaseFileTypeService
             'html' => "<i class='{$fa}' aria-hidden='true'></i>",
         ];
     }
-
 }

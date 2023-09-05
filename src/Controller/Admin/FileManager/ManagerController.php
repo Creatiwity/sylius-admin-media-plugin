@@ -8,18 +8,19 @@ use Artgris\Bundle\FileManagerBundle\Event\FileManagerEvents;
 use Artgris\Bundle\FileManagerBundle\Helpers\FileManager;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 class ManagerController extends BaseManagerController
 {
 
     // surcharge du controleur original car la classe UploadHandler (surchargée) est instanciée
     // à la main ici
-    public function uploadFileAction(Request $request)
+    public function uploadFileAction(Request $request): JsonResponse|Response
     {
         $fileManager = $this->newFileManager($request->query->all());
 
         $options = [
-            'upload_dir' => $fileManager->getCurrentPath().DIRECTORY_SEPARATOR,
+            'upload_dir' => $fileManager->getCurrentPath() . DIRECTORY_SEPARATOR,
             'upload_url' => $fileManager->getImagePath(),
             'accept_file_types' => $fileManager->getRegex(),
             'print_response' => false,
@@ -43,8 +44,6 @@ class ManagerController extends BaseManagerController
 
                 $file->url = $file->name;
             }
-
-
         }
 
         $this->dispatch(FileManagerEvents::POST_UPDATE, ['response' => &$response]);
