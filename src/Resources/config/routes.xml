@@ -17,11 +17,6 @@
            path="/admin/ajax-crop/"
     />
 
-    <route id="admin_ajax_crop"
-           controller="aropixel_sylius_admin_media.controller.admin_ajax_controller:ajaxCrop"
-           path="/admin/manager/upload/"
-    />
-
     <route id="aropixel_sylius_admin_media_crop_ratio"
            controller="aropixel_sylius_admin_media.controller.admin_media_crop_ratio:getCropRatio"
            path="/admin/media/crop-ratio"
